@@ -1,6 +1,6 @@
 -module('20171213_2').
 
--export([start/2, readlines/1, msort/2, splitlist/2, mergefun/2, mergefun/3, append/2, print/2]).
+-export([main/2, readlines/1, msort/2, splitlist/2, mergefun/2, mergefun/3, append/2, print/2]).
 
 %function to parse values
 readlines(FileName) ->
@@ -9,7 +9,7 @@ readlines(FileName) ->
     	[list_to_integer(Item) || Item <- StringData ].
 
 %main function
-start(Input, Output) ->
+main(Input, Output) ->
 	Arr = readlines(Input),
 	Pid = spawn(?MODULE, msort, [self(), Arr]),	
 	receive

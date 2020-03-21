@@ -1,6 +1,6 @@
--module('20171213_1.erl').
+-module('20171213_1').
 
--export([start/2, readlines/1, nodefun/2,  sendMessage/3]).
+-export([main/2, readlines/1, nodefun/2,  sendMessage/3]).
 
 %function to parse values
 readlines(FileName) ->
@@ -8,8 +8,8 @@ readlines(FileName) ->
     	StringData = string:lexemes(string:tokens(erlang:binary_to_list(Data), "\n") , " "),
     	[list_to_integer(Item) || Item <- StringData ].
 
-%main function
-start(Input, Output) ->
+%main functiont
+main(Input, Output) ->
         {ok, OFile} = file:open(Output, [write]),
 	[N, V]= readlines(Input),
 	Processes = [spawn(?MODULE, nodefun, [X,OFile]) || X  <- lists:seq(0, N-1)],
