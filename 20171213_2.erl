@@ -1,6 +1,6 @@
 -module('20171213_2').
 
--export([main/2, readlines/1, msort/2, splitlist/2, mergefun/2, mergefun/3, append/2, print/2]).
+-export([main/1, readlines/1, msort/2, splitlist/2, mergefun/2, mergefun/3, append/2, print/2]).
 
 %function to parse values
 readlines(FileName) ->
@@ -9,7 +9,8 @@ readlines(FileName) ->
     	[list_to_integer(Item) || Item <- StringData ].
 
 %main function
-main(Input, Output) ->
+main(Args) ->
+	[Input, Output] = Args,
 	Arr = readlines(Input),
 	Pid = spawn(?MODULE, msort, [self(), Arr]),	
 	receive
@@ -18,15 +19,17 @@ main(Input, Output) ->
     	end,
 
 % printing to file
-       {ok, OFile} = file:open(Output, [write]),
-       print(SArr, OFile).
+       {ok, _} = file:open(Output, [write]),
+       print(SArr, Output).
 
 %function to print element by element into file
 print([],File) ->
-       io:fwrite(File," \n", []);
+       {ok, FFile} = file:open(File, [append]),
+       io:fwrite(FFile," \n", []);
 
 print([H|T],File) ->
-      io:fwrite(File, "~p ", [H]),
+      {ok, FFile} = file:open(File, [append]), 
+      io:fwrite(FFile, "~p ", [H]),
       print(T,File).
 
 %main merge sort function
